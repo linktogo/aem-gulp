@@ -111,7 +111,7 @@ gulp.task('sass', function () {
 
 // SASS TASK : Sass watch
 gulp.task('sass:watch', function () {
-  gulp.watch(conf.projectPath + 'src/scss/**/*.scss', function (event){
+  gulp.watch(conf.projectPath + 'clientlibs/**/*.css', function (event){
       livereload_path_system	 = event.path.replace(/\\/g, '/')
           .replace('src/scss/','clientlibs/')
           .replace('.scss','.css');
@@ -280,7 +280,7 @@ gulp.task('copy:write', function () {
 });
 
 gulp.task ('js:watch', function (){
-    gulp.watch(conf.projectPath + 'src/js/**/*.js', function (event){
+    gulp.watch(conf.projectPath + 'clientlibs/**/*.js', function (event){
         livereload_path_system	 = event.path.replace(/\\/g, '/');
         if (isdebug()) console.log (livereload_path_system);
         livereload_pathArray = livereload_path_system.split('/');
@@ -313,7 +313,7 @@ gulp.task('browser-sync', function() {
         debugInfo: true,
         tunnel: false,
         serveStatic: ['.'],
-        reloadDelay: 1000
+        reloadDelay: 2000
     });
 });
 
