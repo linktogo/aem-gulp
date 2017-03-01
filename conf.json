@@ -3,7 +3,7 @@
   "author":"on",
   "publish":"off",
   "projectPath":"./src/main/jcr_root/etc/designs/richemont-vca/",
-  "pathInstance":"10.61.89.82",
+  "pathInstance":"localhost",
   "port":"4502",
   "portpublish":"4503",
   "scripts": [
