@@ -641,6 +641,7 @@ gulp.task('sprite:sprite', function(){runSequence('sprite:pngSprite', 'sprite:st
 gulp.task('sprite', function(){runSequence('sprite:sprite','sprite:watch')});
 gulp.task('bower:all', function(){runSequence('copy:bower')});
 gulp.task('copy:all', function(){runSequence('copy:static', 'copy:js', 'del:js')});//'copy:write'
+gulp.task('test', function(){runSequence('jshint','csslint')});
 gulp.task('styles:all', function(){runSequence('sass')});
 gulp.task('connect', function(){runSequence('sass:watch', 'js:watch','jsp:watch' , 'browser-sync')});
 gulp.task('serve', function(){runSequence('install','connect')});
