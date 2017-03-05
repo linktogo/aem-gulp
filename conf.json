@@ -1,24 +1,30 @@
 {
   "debug":"on",
   "author":"on",
-  "publish":"off",
-  "projectPath":"../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/",
-  "pathInstance":"10.61.89.85",
+  "publish":"on",
+  "pathInstance":"localhost",
   "port":"4502",
-  "portpublish":"4503",
+  "pathInstancePublish":"localhost",
+  "portpublish":"4502",
+
+  "projectPath":"./src/main/jcr_root/etc/designs/valtech/",
+  "projectPathJsp": [
+    "../../cms-vca-base/cms-vca-base-package/src/main/jcr_root/apps/**/*.jsp",
+    "../../cms-vca-core/cms-vca-core-package/src/main/jcr_root/apps/**/*.jsp"
+  ],
   "scripts": [
-    "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/clientlibs/publish/scripts/**/*.js"
+    "./src/main/jcr_root/etc/designs/valtech/clientlibs/publish/scripts/**/*.js"
   ],
   "jasmine": [
-    "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/src/js/**/*.spec.js"
+    "./src/main/jcr_root/etc/designs/valtech/src/js/**/*.spec.js"
   ],
   "sprite" : {
-    "cssDestDir" : "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/clientlibs/publish/styles/",
-    "cssSrcDir" : "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/api/front/dest/assets/css/",
-    "spriteDestDir" : "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/clientlibs/images/vca-sprite/",
-    "templateSrcDir" : "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/api/front/dev/tpl/",
-    "devSrcDir" : "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/api/front/dev/",
-    "assetsSrcDir" : "../cms-vca/cms-vca-design/cms-vca-design-package/src/main/jcr_root/etc/designs/richemont-vca/api/front/dest/assets/",
+    "cssDestDir" : "/src/main/jcr_root/etc/designs/valtech/clientlibs/publish/styles/",
+    "cssSrcDir" : "/src/main/jcr_root/etc/designs/valtech/api/front/dest/assets/css/",
+    "spriteDestDir" : "/src/main/jcr_root/etc/designs/valtech/clientlibs/images/vca-sprite/",
+    "templateSrcDir" : "/src/main/jcr_root/etc/designs/valtech/api/front/dev/tpl/",
+    "devSrcDir" : "/src/main/jcr_root/etc/designs/valtech/api/front/dev/",
+    "assetsSrcDir" : "/src/main/jcr_root/etc/designs/valtech/api/front/dest/assets/",
     "spriteDestDirString" : "../../images/vca-sprite"
   }
 }

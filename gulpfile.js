@@ -28,13 +28,13 @@ var gulp					 = require('gulp'),
     jshint					 = require('gulp-jshint'),
     csslint                  = require('gulp-csslint'),
     browserSync				 = require('browser-sync').create(),
-	// Json configuration file
+    // Json configuration file
     jsDocConfig			     = require('./docs/jsdoc.conf.json'),
     //
     pkg                      = require('./package.json'),
     // Paths
     conf					 = require('./conf.json'),
-	livereload_path_system	 = '',
+    livereload_path_system	 = '',
     livereload_pathArray	 = '',
     livereload_componentPath = '',
     livereload_fileName		 = '',
@@ -65,33 +65,33 @@ var gulp					 = require('gulp'),
      * SPRITE CREATION DEPENDENCIES
      * @type {{src: string, dest: string}}
      */
-	basePaths = {
-		src: path.resolve(__dirname) + conf.sprite.devSrcDir,
-		dest: path.resolve(__dirname) + conf.sprite.assetsSrcDir
-	},
-	paths_sprites = {
-		images: {
-			src: basePaths.src + 'img/',
-			dest: basePaths.dest + 'img/'
-		},
-		sprite: {
-			src: basePaths.src + 'sprite/*',
-			svg: 'img/sprite.svg',
-			css: basePaths.src + 'sass/utils/sprite/_sprite.scss'
-		},
-		templates: {
-			src: basePaths.src + 'tpl/'
-		}
-	},
+    basePaths = {
+        src: path.resolve(__dirname) + conf.sprite.devSrcDir,
+        dest: path.resolve(__dirname) + conf.sprite.assetsSrcDir
+    },
+    paths_sprites = {
+        images: {
+            src: basePaths.src + 'img/',
+            dest: basePaths.dest + 'img/'
+        },
+        sprite: {
+            src: basePaths.src + 'sprite/*',
+            svg: 'img/sprite.svg',
+            css: basePaths.src + 'sass/utils/sprite/_sprite.scss'
+        },
+        templates: {
+            src: basePaths.src + 'tpl/'
+        }
+    },
     svgSprite				 = require('gulp-svg-sprite'),
     svg2png					 = require('gulp-svg2png'),
     size					 = require('gulp-size'),
     autoprefixer			 = require('gulp-autoprefixer'),
     uglify					 = require('gulp-uglify'),
-	changeEvent				 = function(evt) {
+    changeEvent				 = function(evt) {
         console.log('changeEvent - onChange evt : ', evt);
-		gutil.log('File', gutil.colors.cyan(evt.path.replace(new RegExp('/.*(?=/' + basePaths.src + ')/'), '')), 'was', gutil.colors.magenta(evt.type));
-	};
+        gutil.log('File', gutil.colors.cyan(evt.path.replace(new RegExp('/.*(?=/' + basePaths.src + ')/'), '')), 'was', gutil.colors.magenta(evt.type));
+    };
 
 
 
@@ -103,26 +103,32 @@ var gulp					 = require('gulp'),
  * STYLE                                                                                                         BEGIN
  *********************************************************************************************************************/
 gulp.task('sass', function () {
-  return gulp.src(conf.projectPath + 'src/scss/**/*.scss')
-    .pipe(sass({outputStyle: 'compressed'}))
-    .on('error', sass.logError)
-    .pipe(gulp.dest(conf.projectPath + 'clientlibs/'));
+    return gulp.src(conf.projectPath + 'src/scss/**/*.scss')
+        .pipe(sass())
+        .on('error', sass.logError)
+        .pipe(gulp.dest(conf.projectPath + 'clientlibs/'));
 });
 
 // SASS TASK : Sass watch
 gulp.task('sass:watch', function () {
-  gulp.watch(conf.projectPath + 'clientlibs/**/*.css', function (event){
-      livereload_path_system	 = event.path.replace(/\\/g, '/')
-          .replace('src/scss/','clientlibs/')
-          .replace('.scss','.css');
+    gulp.watch(conf.projectPath + 'src/scss/**/*.scss', function (event){
+        console.log (event);
 
-      if (conf.debug) console.log (livereload_path_system);
+        runSequence('sass');
 
-      livereload_pathArray = livereload_path_system	.split('/');
-      livereload_fileName = livereload_pathArray[livereload_pathArray.length - 1];
-      livereload_componentPath = livereload_path_system	.replace(livereload_path_system	.split("/etc/designs/")[0]+'/etc/designs/', '');
-      return runSequence('sass','curl-vault','browser-sync:reload');
-  });
+    });
+
+    gulp.watch(conf.projectPath + 'clientlibs/**/*.css', function (event){
+        livereload_path_system	 = event.path.replace(/\\/g, '/');
+
+        if (conf.debug) console.log (livereload_path_system);
+
+        livereload_pathArray = livereload_path_system	.split('/');
+        livereload_fileName = livereload_pathArray[livereload_pathArray.length - 1];
+        livereload_componentPath = livereload_path_system	.replace(livereload_path_system	.split("/etc/designs/")[0]+'/etc/designs/', '');
+        runSequence('curl-vault');
+        runSequence('browser-sync:reload');
+    });
 });
 
 // FILE TASK : Check CSS code with csslint, just doesn't work
@@ -206,7 +212,7 @@ gulp.task('del:js', function () {
         conf.projectPath + 'clientlibs/publish/scripts/storelocator.js',
         conf.projectPath + 'clientlibs/publish/scripts/modernizr-1.7.min.js',
         conf.projectPath + 'clientlibs/publish/scripts/CTAband.js'
-        ]);
+    ]);
 });
 
 // FILE TASK : copy JS files to clientLib
@@ -237,15 +243,15 @@ gulp.task('copy:write', function () {
         });
 
     fs.appendFile(_conf.projectPath + 'clientlibs/publish/js.txt', '#base=scripts\n', function (err) {
-          if (err) {
-              console.error('copy:files - err : ', err);
-          }
+        if (err) {
+            console.error('copy:files - err : ', err);
+        }
     });
 
     // And store their into the array list
     glob(_conf.projectPath + 'clientlibs/publish/scripts/00-vendor/**/*.js', function(err, files) {
 
-    // Appending files names to clientlib directory js.txt file
+        // Appending files names to clientlib directory js.txt file
         for (var i=0; i<files.length; i++) {
             (function(idx){
                 var fileName = files[idx].replace(_conf.projectPath + 'clientlibs/publish/scripts/', '');
@@ -263,24 +269,24 @@ gulp.task('copy:write', function () {
     glob(_conf.projectPath + 'clientlibs/publish/scripts/00-vendor/**/*.js', function(err, files) {
 
         // Appending files names to clientlib directory js.txt file
-            for (var i=0; i<files.length; i++) {
-                (function(idx){
-                    var fileName = files[idx].replace(_conf.projectPath + 'clientlibs/publish/scripts/', '');
-                    fs.appendFile(_conf.projectPath + 'clientlibs/publish/js.txt', fileName + '\n', function (err) {
-                        if (err) {
-                            console.error('copy:write - ERROR : ', err);
-                        } else {
-                            console.log('copy:write - ' + fileName + ' appended.');
-                        }
-                    });
-                })(i);
-            }
-        });
+        for (var i=0; i<files.length; i++) {
+            (function(idx){
+                var fileName = files[idx].replace(_conf.projectPath + 'clientlibs/publish/scripts/', '');
+                fs.appendFile(_conf.projectPath + 'clientlibs/publish/js.txt', fileName + '\n', function (err) {
+                    if (err) {
+                        console.error('copy:write - ERROR : ', err);
+                    } else {
+                        console.log('copy:write - ' + fileName + ' appended.');
+                    }
+                });
+            })(i);
+        }
+    });
 
 });
 
 gulp.task ('js:watch', function (){
-    gulp.watch(conf.projectPath + 'clientlibs/**/*.js', function (event){
+    gulp.watch(conf.projectPath + 'src/js/**/*.js', function (event){
         livereload_path_system	 = event.path.replace(/\\/g, '/');
         if (isdebug()) console.log (livereload_path_system);
         livereload_pathArray = livereload_path_system.split('/');
@@ -303,17 +309,37 @@ gulp.task('jshint', function() {
 
 
 /**********************************************************************************************************************
+ * JSP                                                                                                          DEBUG
+ *********************************************************************************************************************/
+
+gulp.task ('jsp:watch', function (){
+    gulp.watch(conf.projectPathJsp, function (event){
+        livereload_path_system	 = event.path.replace(/\\/g, '/');
+        if (isdebug()) console.log (livereload_path_system);
+        livereload_pathArray = livereload_path_system.split('/');
+        livereload_fileName = livereload_pathArray[livereload_pathArray.length - 1];
+        livereload_componentPath = livereload_path_system.replace(livereload_path_system.split("/apps/")[0]+'/apps/', '');
+        return runSequence('curl-vault:jsp','browser-sync:reload');
+    });
+});
+
+/**********************************************************************************************************************
+ * JSP                                                                                                            END
+ *********************************************************************************************************************/
+
+
+/**********************************************************************************************************************
  * LIVE RELOAD                                                                                                  BEGIN
  *********************************************************************************************************************/
 
 gulp.task('browser-sync', function() {
     browserSync.init({
-        proxy: conf.pathInstance+':'+conf.port+'/eu/fr.html?wcmmode=disabled',
+        proxy: conf.pathInstance+':'+conf.portpublish+'/eu/fr.html',
         watchTask: true,
         debugInfo: true,
         tunnel: false,
         serveStatic: ['.'],
-        reloadDelay: 2000
+        reloadDelay: 1500
     });
 });
 
@@ -336,19 +362,20 @@ gulp.task('curl-vault', function () {
             .pipe(shell([
                 'curl -u admin:admin -s -T ' + livereload_path_system + ' http://' + conf.pathInstance + ':' + conf.port + '/etc/designs/' + livereload_componentPath
             ]))
+
             .pipe(notify({
                 onLast: true,
                 title: 'Curl vault update Author'
             }));
     }
     if (isPublish()){
-        if (isdebug())console.log ('curl -u admin:admin -s -T -X POST ' + livereload_path_system + ' http://' + conf.pathInstance + ':' + conf.port + '/etc/designs/' + livereload_componentPath);
+        if (isdebug())console.log ('Launch Publish replication');
         gulp.src('')
             .pipe(plumber({
                 errorHandler: beepError
             }))
             .pipe(shell([
-                'curl -u admin:admin -s -T -X POST ' + livereload_path_system + ' http://' + conf.pathInstance + ':' + conf.port + '/etc/designs/' + livereload_componentPath
+                'curl -u admin:admin  -F '+ 'path="/etc/designs/' + livereload_componentPath+ '" -F cmd="activate" http://'+ conf.pathInstance + ':' + conf.port +'/bin/replicate.json'
             ]))
             .pipe(notify({
                 onLast: true,
@@ -357,6 +384,38 @@ gulp.task('curl-vault', function () {
     }
 });
 
+//CONTINUOUS INTEGRATION TASK : Send to instance
+gulp.task('curl-vault:jsp', function () {
+    if (isAuthor()){
+        if (isdebug())console.log ('curl -u admin:admin -s -T ' + livereload_path_system + ' http://' + conf.pathInstance + ':' + conf.port + '/apps/' +livereload_componentPath);
+        gulp.src('')
+            .pipe(plumber({
+                errorHandler: beepError
+            }))
+            .pipe(shell([
+                'curl -u admin:admin -s -T ' + livereload_path_system + ' http://' + conf.pathInstance + ':' + conf.port  + '/apps/' + livereload_componentPath
+            ]))
+
+            .pipe(notify({
+                onLast: true,
+                title: 'Curl vault update Author jsp'
+            }));
+    }
+    if (isPublish()){
+        if (isdebug())console.log ('Launch Publish replication');
+        gulp.src('')
+            .pipe(plumber({
+                errorHandler: beepError
+            }))
+            .pipe(shell([
+                'curl -u admin:admin  -F '+ 'path="/apps/' + livereload_componentPath+ '" -F cmd="activate" http://'+ conf.pathInstance + ':' + conf.port +'/bin/replicate.json'
+            ]))
+            .pipe(notify({
+                onLast: true,
+                title: 'Curl vault update Publish jsp'
+            }));
+    }
+});
 
 
 /**********************************************************************************************************************
@@ -583,7 +642,7 @@ gulp.task('sprite', function(){runSequence('sprite:sprite','sprite:watch')});
 gulp.task('bower:all', function(){runSequence('copy:bower')});
 gulp.task('copy:all', function(){runSequence('copy:static', 'copy:js', 'del:js')});//'copy:write'
 gulp.task('styles:all', function(){runSequence('sass')});
-gulp.task('connect', function(){runSequence('sass:watch', 'js:watch', 'browser-sync')});
+gulp.task('connect', function(){runSequence('sass:watch', 'js:watch','jsp:watch' , 'browser-sync')});
 gulp.task('serve', function(){runSequence('install','connect')});
 gulp.task('install', function(){runSequence('bower:all','copy:all', 'styles:all')}); //'sprite:sprite'
 gulp.task('default', function(){runSequence('install')});
